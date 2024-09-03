@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 @SuppressWarnings("rawtypes")
 public class SimpleListV2 <T> implements List<T> {
@@ -15,6 +16,29 @@ public class SimpleListV2 <T> implements List<T> {
     public SimpleListV2(){
       header = null;
       last = null;
+    }
+
+     @Override
+    public Iterator<T> iterator() {
+        return new SimpleListIterator();
+    }
+    private class SimpleListIterator implements Iterator<T> {
+        private Node<T> current = header;
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            T data = current.getInfo();
+            current = current.getNext();
+            return data;
+        }
     }
 
     // TODO:  falta addionar mas de un elemento y que lo adiciona a la lista
@@ -113,12 +137,6 @@ public class SimpleListV2 <T> implements List<T> {
     public boolean contains(Object o) {
       // TODO Auto-generated method stub
       throw new UnsupportedOperationException("Unimplemented method 'contains'");
-    }
-
-    @Override
-    public Iterator iterator() {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'iterator'");
     }
 
     @Override
